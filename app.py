@@ -28,6 +28,21 @@ def add_movie():
         'response': response
     }
    
+@app.route('/movie/<int:id>', methods=['GET'])
+def get_movie(id):
+    response = dynamodb.get_item_from_movie_table(id)
+    
+    if (response['ResponseMetadata']['HTTPStatusCode'] == 200):
+        
+        if ('Item' in response):
+            return { 'Item': response['Item'] }
+
+        return { 'msg' : 'Item not found!' }
+
+    return {
+        'msg': 'Some error occured',
+        'response': response
+    }
 
     
     
