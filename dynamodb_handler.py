@@ -35,3 +35,16 @@ def create_table_movie():
        }
    )
    return table
+   
+MovieTable = dynamodb_resource.Table('Movie')#getting the table
+
+def add_item_to_movie_table(id, title, director):
+    response = MovieTable.put_item(
+        Item = {
+            'id'     : id,
+            'title'  : title,
+            'director' : director,
+            'likes'  : 0
+        }
+    )
+    return response
