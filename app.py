@@ -44,7 +44,36 @@ def get_movie(id):
         'response': response
     }
 
+@app.route('/movie/<int:id>', methods=['PUT'])
+def update_movie_table(id):
+    data = request.get_json()
+
     
+
+    # data = {
+    #     'title': 'Angels And Demons',
+    #     'author': 'Daniel Brown'
+    # }
+
+    response = dynamodb.update_item_in_movie_table(id, data)
+
+    if (response['ResponseMetadata']['HTTPStatusCode'] == 200):
+        return {
+            'msg'                : 'Updated successfully',
+            'ModifiedAttributes' : response['Attributes'],
+            'response'           : response['ResponseMetadata']
+        }
+
+    return {
+        'msg'      : 'Some error occured',
+        'response' : response
+    }       
+
+@app.route('/movie/<int:id>', methods=['DELETE'])
+def delete_item(id):
+    response = dynamodb.delete_item_from_movie_table(id)
+    
+    return response
     
 #define port and host
 if __name__ == '__main__':
